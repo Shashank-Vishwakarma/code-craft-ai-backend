@@ -1,0 +1,28 @@
+{
+  "name": "code-craft-ai-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsc && node ./dist/app.js",
+    "dev": "tsc && node ./dist/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shashank-Vishwakarma/code-craft-ai-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shashank-Vishwakarma/code-craft-ai-backend/issues"
+  },
+  "homepage": "https://github.com/Shashank-Vishwakarma/code-craft-ai-backend#readme",
+  "description": "",
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
