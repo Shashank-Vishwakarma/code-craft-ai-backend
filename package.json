@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "start": "tsc && node ./dist/app.js",
-    "dev": "tsc && node ./dist/app.js"
+    "server": "nodemon ./dist/app.js",
+    "watch": "tsc -w",
+    "dev": "concurrently \"npm run watch\" \"npm run server\""
   },
   "repository": {
     "type": "git",
@@ -20,9 +22,12 @@
   "description": "",
   "devDependencies": {
     "@types/express": "^5.0.3",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.11.1",
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@prisma/client": "^6.11.1",
     "express": "^5.1.0"
   }
 }
