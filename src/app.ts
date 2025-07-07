@@ -1,12 +1,20 @@
-import express, { Express } from "express"
+import express, { Express } from "express";
+import cors from "cors";
+import CookieParser from "cookie-parser";
+
+import { Config } from "./config/config";
+import inngestRouter from "./routes/inngest";
 
 const app: Express = express();
 
-app.get("/", (req, res)=>{
-    res.json({message: "Hello from code-craft-ai-backend"})
-})
+app.use(cors());
+app.use(express.json());
+app.use(CookieParser());
 
-const PORT = process.env.PORT || 8000;
+// use inngest router
+app.use(inngestRouter);
+
+const PORT = Config.PORT || 8000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`)
+    console.log(`Server is accessible at ${Config.APP_URL}`);
 })
