@@ -30,6 +30,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@inngest/agent-kit": "^0.9.0",
     "@prisma/client": "^6.11.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",

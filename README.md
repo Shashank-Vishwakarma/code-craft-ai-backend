@@ -16,7 +16,7 @@ This project utilizes a range of cutting-edge technologies to provide a robust a
 * TypeScript for type safety
 * Groq AI
 * Gemini
-* Inngest for background and agentic workflows
+* Inngest for background and agentic workflows (Agent Kit)
 * Clerk for authentication
 
 ## Features
