@@ -1,0 +1,17 @@
+# This is a config for E2B sandbox template.
+# You can use template ID (45pc8gybidmfw7u4551y) or template name (code-craft-ai-nextjs-test-3) to create a sandbox:
+
+# Python SDK
+# from e2b import Sandbox, AsyncSandbox
+# sandbox = Sandbox("code-craft-ai-nextjs-test-3") # Sync sandbox
+# sandbox = await AsyncSandbox.create("code-craft-ai-nextjs-test-3") # Async sandbox
+
+# JS SDK
+# import { Sandbox } from 'e2b'
+# const sandbox = await Sandbox.create('code-craft-ai-nextjs-test-3')
+
+team_id = "9dc97d22-60d1-4514-ba85-eb862ca51080"
+start_cmd = "/compile_page.sh"
+dockerfile = "e2b.Dockerfile"
+template_name = "code-craft-ai-nextjs-test-3"
+template_id = "45pc8gybidmfw7u4551y"
