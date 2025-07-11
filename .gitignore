@@ -47,4 +47,4 @@ coverage
 .build
 
 dist
-/src/generated/prisma
+/generated/prisma

@@ -1,6 +1,7 @@
-import { createTool } from "@inngest/agent-kit";
+import { createTool, type Tool } from "@inngest/agent-kit";
 import z from "zod";
 import { getSandbox } from "../utils/e2b-sandbox";
+import { AgentState } from "./functions";
 
 export const terminalTool = (sandboxId: string) => {
     return createTool({
@@ -49,8 +50,8 @@ export const createOrUpdateFile = (sandboxId: string) => {
                 })
             )
         }),
-        handler: async ({ files }, { step, network }) => {
-            const newFiles = step?.run("createOrUpdateFile", async () => {
+        handler: async ({ files }, { step, network }: Tool.Options<AgentState>) => {
+            const newFiles = await step?.run("createOrUpdateFile", async () => {
                 try {
                     const updatedFiles = network.state.data.files || {};
                     const sanbox = await getSandbox(sandboxId);

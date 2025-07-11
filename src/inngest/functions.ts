@@ -7,19 +7,27 @@ import { getSandbox } from "../utils/e2b-sandbox";
 import { createOrUpdateFile, readFiles, terminalTool } from "./tools";
 import { PROMPT } from "../prompts/prompts";
 import { getLastAssistantMessage } from "../utils/inngest";
+import { prisma } from "../db/prisma";
 
-const helloWorld = inngest.createFunction(
-    { id: 'hello-world' },
-    { event: "test/hello.world" },
+export interface AgentState {
+    summary: string,
+    files: {
+        [path: string]: string
+    }
+};
+
+const codeGeneratorAgentFunction = inngest.createFunction(
+    { id: 'code-craft-ai-code-generator-agent' },
+    { event: "code-craft-ai-code-generator-agent/run" },
     async ({event, step}) => {
         // get sandbox id
         const sandboxId = await step.run("get-sandbox-id", async () => {
             const sandbox = await Sandbox.create("code-craft-ai-nextjs-test-3", { apiKey: Config.E2B_API_KEY });
             return sandbox.sandboxId;
-        })
+        });
 
         // generate file in the sanbox
-        const codeAgent = createAgent({
+        const codeAgent = createAgent<AgentState>({
             name: "code-agent",
             system: PROMPT,
             description: "An expert coding agent",
@@ -44,7 +52,7 @@ const helloWorld = inngest.createFunction(
             }
         });
 
-        const network = createNetwork({
+        const network = createNetwork<AgentState>({
             name: "coding-agent-network",
             agents: [codeAgent],
             maxIter: 15,
@@ -66,6 +74,42 @@ const helloWorld = inngest.createFunction(
             return `https://${host}`
         })
 
+        console.log("result", result.state.data);
+
+        const isError = !result.state.data.summary || Object.keys(result.state.data.files).length === 0;
+
+        // save the data in the db
+        await step.run("save-result-in-db", async () => {
+            if(isError) {
+                await prisma.message.create({
+                    data: {
+                        content: "Something went wrong. Please try again.",
+                        role: "ASSISTANT",
+                        type: "ERROR",
+                        projectId: event.data.projectId
+                    }
+                });
+
+                return
+            }
+
+            await prisma.message.create({
+                data: {
+                    content: result.state.data.summary,
+                    role: "ASSISTANT",
+                    type: "RESULT",
+                    projectId: event.data.projectId,
+                    fragment: {
+                        create: {
+                            sandboxUrl: sanboxUrl,
+                            files: result.state.data.files,
+                            title: "Fragment"
+                        }
+                    }
+                }
+            });
+        });
+
         return { 
             url: sanboxUrl,
             title: "Fragment",
@@ -76,5 +120,5 @@ const helloWorld = inngest.createFunction(
 );
 
 export const functions = [
-    helloWorld
+    codeGeneratorAgentFunction
 ];
